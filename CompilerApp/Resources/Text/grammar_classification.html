@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Классификация грамматики</title>
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 14pt;
+            color: black;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-left: 3cm;
+            margin-right: 1.5cm;
+            text-align: justify;
+            text-indent: 1.25cm;
+            line-height: 1.25;
+            padding: 0cm;
+        }
+        h1 {
+            text-align: left;
+            text-indent: 0;
+            font-weight: normal;
+        }
+        .grammar {
+            text-indent: 0;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>3 Классификация грамматики</h1>
+        <p>Согласно классификации Хомского, грамматика G[&lt;PR&gt;] является автоматной (регулярной) 
+            и относится к праволинейному типу (все правила (1)-(16) относятся к классу праворекурсивных продукций), 
+            так как удовлетворяет определению:
+            G[A]: A → aB | a | ε, где a ∈ V<sub>T</sub>, A ∈ V<sub>N</sub> и B ∈ V<sub>N</sub>.</p>
+
+        <p class="grammar">
+            1) &lt;PR&gt; → &lt;type&gt; &lt;SPACE&gt;
+            2) &lt;SPACE&gt; → ‘ ’ &lt;IDFUNC&gt;
+            3) &lt;IDFUNC&gt; → &lt;letter&gt; &lt;IDFUNCREM&gt;
+            4) &lt;IDFUNCREM&gt; → &lt;letter&gt; &lt;IDFUNCREM&gt;
+            5) &lt;IDFUNCREM&gt; → &lt;digit&gt; &lt;IDFUNCREM&gt;
+            6) &lt;IDFUNCREM&gt; → ‘(’ &lt;EMPTY&gt;
+            7) &lt;IDFUNCREM&gt; → ‘(’ &lt;PARAMETERS&gt;
+            8) &lt;EMPTY&gt; → ‘)’ &lt;END&gt;
+            9) &lt;PARAMETERS&gt; → &lt;type&gt; &lt;SPACE2&gt;
+            10) &lt;SPACE2&gt; → ‘ ’ &lt;IDPARAM&gt;
+            11) &lt;IDPARAM&gt; → &lt;letter&gt; &lt;IDPARAMREM&gt;
+            12) &lt;IDPARAMREM&gt; → &lt;letter&gt; &lt;IDPARAMREM&gt;
+            13) &lt;IDPARAMREM&gt; → &lt;digit&gt; &lt;IDPARAMREM&gt;
+            14) &lt;IDPARAMREM&gt; → ‘,’ &lt;PARAMETERS&gt;
+            15) &lt;IDPARAMREM&gt; → ‘)’ &lt;END&gt;
+            16) &lt;END&gt; → ‘;’
+        </p>
+    </div>
+</body>
+</html>

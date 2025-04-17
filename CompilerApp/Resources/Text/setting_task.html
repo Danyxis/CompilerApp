@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Постановка задачи</title>
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 14pt;
+            color: black;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-left: 3cm;
+            margin-right: 1.5cm;
+            text-align: justify;
+            text-indent: 1.25cm;
+            line-height: 1.25;
+            padding: 0cm;
+        }
+        h1 {
+            text-align: left;
+            text-indent: 0;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>1 Постановка задачи</h1>
+        <p>Прототипом функции в языке C/C++ называется строка объявления, содержащая тип возвращаемого значения, 
+            имя функции и (опционально) список параметров с их типами, но не содержащая тела функции. 
+            Прототип сообщает компилятору о существовании функции и о том, как она должна вызываться.</p>
+        <p>Формат записи прототипа функции представлен ниже:</p>
+        <p>“тип_возвращаемого_значения имя_функции(список_параметров);”</p>
+        <p>Примеры:</p>
+        <p>1) Прототип с типом string и без параметров: “string printHello();”<br>
+        <p>2) Прототип с типом int и одним параметром: “int sum(int a);”<br>
+        <p>3) Прототип с типом float и двумя (или несколькими) параметрами: “float calculateRectangleArea(float length, float width);”</p>
+        <p>В связи с разработанной автоматной грамматикой G[&lt;PR&gt;] лексический анализатор (сканер) 
+            прототипов функций будет считать верными следующие записи:</p>
+        <p>1) “bool flag();”<br>
+        <p>2) “char getFirstChar(string text);”<br>
+        <p>3) “int add(int a, int b);”<br>
+        <p>4) “float max(float number1, float number2, float number3);”</p>
+        <p>Справка (руководство пользователя) представлена в Приложении А.<br>
+        <p>Информация о программе представлена в Приложении Б.</p>
+    </div>
+</body>
+</html>
