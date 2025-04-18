@@ -267,28 +267,26 @@ G[&lt;PR&gt;]:
 
    - V<sub>N</sub> = {&lt;PR&gt;, &lt;SPACE&gt;, &lt;IDFUNC&gt;, &lt;IDFUNCREM&gt;, &lt;EMPTY&gt;, &lt;PARAMETERS&gt;, &lt;SPACE2&gt;, &lt;IDPARAM&gt;, &lt;IDPARAMREM&gt;, &lt;END&gt;};
 
-   - P = {
-      1. &lt;PR&gt; → &lt;type&gt; &lt;SPACE&gt;
-      2. &lt;SPACE&gt; → ‘ ’ &lt;IDFUNC&gt;
-      3. &lt;IDFUNC&gt; → &lt;letter&gt; &lt;IDFUNCREM&gt;
-      4. &lt;IDFUNCREM&gt; → &lt;letter&gt; &lt;IDFUNCREM&gt;
-      5. &lt;IDFUNCREM&gt; → &lt;digit&gt; &lt;IDFUNCREM&gt;
-      6. &lt;IDFUNCREM&gt; → ‘(’ &lt;EMPTY&gt;
-      7. &lt;IDFUNCREM&gt; → ‘(’ &lt;PARAMETERS&gt;
-      8. &lt;EMPTY&gt; → ‘)’ &lt;END&gt;
-      9. &lt;PARAMETERS&gt; → &lt;type&gt; &lt;SPACE2&gt;
-      10. &lt;SPACE2&gt; → ‘ ’ &lt;IDPARAM&gt;
-      11. &lt;IDPARAM&gt; → &lt;letter&gt; &lt;IDPARAMREM&gt;
-      12. &lt;IDPARAMREM&gt; → &lt;letter&gt; &lt;IDPARAMREM&gt;
-      13. &lt;IDPARAMREM&gt; → &lt;digit&gt; &lt;IDPARAMREM&gt;
-      14. &lt;IDPARAMREM&gt; → ‘,’ &lt;PARAMETERS&gt;
-      15. &lt;IDPARAMREM&gt; → ‘)’ &lt;END&gt;
-      16. &lt;END&gt; → ‘;’
-      - &lt;type&gt; → ‘int’ | ‘float’ | ‘char’ | ‘string’ | ‘bool’
-      - &lt;letter&gt; → ‘a’ | ‘b’ | ‘c’ | … | ‘y’ | ‘z’ | ‘A’ | ‘B’ | ‘C’ | … | ‘Y’ | ‘Z’
-      - &lt;digit&gt; → ‘0’ | ‘1’ | ‘2’ | ‘3’ | ‘4’ | ‘5’ | ‘6’ | ‘7’ | ‘8’ | ‘9’
-
-      }.
+   - P =
+   1. &lt;PR&gt; → &lt;type&gt; &lt;SPACE&gt;
+   2. &lt;SPACE&gt; → ‘ ’ &lt;IDFUNC&gt;
+   3. &lt;IDFUNC&gt; → &lt;letter&gt; &lt;IDFUNCREM&gt;
+   4. &lt;IDFUNCREM&gt; → &lt;letter&gt; &lt;IDFUNCREM&gt;
+   5. &lt;IDFUNCREM&gt; → &lt;digit&gt; &lt;IDFUNCREM&gt;
+   6. &lt;IDFUNCREM&gt; → ‘(’ &lt;EMPTY&gt;
+   7. &lt;IDFUNCREM&gt; → ‘(’ &lt;PARAMETERS&gt;
+   8. &lt;EMPTY&gt; → ‘)’ &lt;END&gt;
+   9. &lt;PARAMETERS&gt; → &lt;type&gt; &lt;SPACE2&gt;
+   10. &lt;SPACE2&gt; → ‘ ’ &lt;IDPARAM&gt;
+   11. &lt;IDPARAM&gt; → &lt;letter&gt; &lt;IDPARAMREM&gt;
+   12. &lt;IDPARAMREM&gt; → &lt;letter&gt; &lt;IDPARAMREM&gt;
+   13. &lt;IDPARAMREM&gt; → &lt;digit&gt; &lt;IDPARAMREM&gt;
+   14. &lt;IDPARAMREM&gt; → ‘,’ &lt;PARAMETERS&gt;
+   15. &lt;IDPARAMREM&gt; → ‘)’ &lt;END&gt;
+   16. &lt;END&gt; → ‘;’
+   - &lt;type&gt; → ‘int’ | ‘float’ | ‘char’ | ‘string’ | ‘bool’
+   - &lt;letter&gt; → ‘a’ | ‘b’ | ‘c’ | … | ‘y’ | ‘z’ | ‘A’ | ‘B’ | ‘C’ | … | ‘Y’ | ‘Z’
+   - &lt;digit&gt; → ‘0’ | ‘1’ | ‘2’ | ‘3’ | ‘4’ | ‘5’ | ‘6’ | ‘7’ | ‘8’ | ‘9’
 
 ### Классификация грамматики
 
@@ -314,7 +312,7 @@ G[&lt;PR&gt;]:
 
 > Недопустимые фрагменты (ошибки) текста (строки) подсвечиваются в окне/области ввода/редактирования текста.
 
-- **Тестовый пример №1.** Все выражения написаны корректно.
+- **Тестовый пример №1.** Все выражения введены корректно.
 
 ![Тестовый пример №1](/README_images/lab_work3_syntax_analyzer_development/test_example_1.png)
 
@@ -352,7 +350,7 @@ G[&lt;PR&gt;]:
 
 Разрабатываемый синтаксический анализатор построен на базе автоматной грамматики. Предлагается свести алгоритм нейтрализации к последовательному удалению следующего символа во входной цепочке до тех пор, пока следующий символ не окажется одним из допустимых в данный момент разбора.
 
-Данный алгоритм нейтрализации уже был реализован в [Лабораторной работа №3: Разработка синтаксического анализатора (парсера)](#лабораторная-работа-3-разработка-синтаксического-анализатора-парсера).
+Данный алгоритм нейтрализации уже был реализован в [Лабораторной работе №3: Разработка синтаксического анализатора (парсера)](#лабораторная-работа-3-разработка-синтаксического-анализатора-парсера).
 
 В таблице «Список ошибок» выводится индекс ошибки, её описание, текст, содержащий информацию об отброшенном фрагменте, местоположение ошибки.
 
