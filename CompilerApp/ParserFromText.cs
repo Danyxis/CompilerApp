@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace CompilerApp
 {
-    internal class ParserFromText // Класс синтаксического анализатора (парсера) (посимвольно)
+    // Класс синтаксического анализатора (парсера)
+    // (анализ по символам, с выводом всех ошибок, с нейтрализацией ошибок)
+    // Частично работает корректно
+    internal class ParserFromText
     {
         // Входные строки (все строки из редактора, могут быть многострочными)
         private readonly string[] _lines;
@@ -554,4 +557,340 @@ namespace CompilerApp
             return groups;
         }
     }
+
+    //// Класс синтаксического анализатора (парсера)
+    //// (анализ по символам, с выводом всех ошибок, без нейтрализации ошибок)
+    //// Частично работает корректно, закомментированные части внутри алгоритма - не расскоментировать!
+    //internal class ParserFromText
+    //{
+    //    private readonly string[] _lines;               // Все строки из редактора
+    //    private string _line;                           // Объединённая строка
+    //    private int _pos;                               // Текущая позиция в строке
+    //    private int _lineNumber = 1;                    // Номер строки (всегда 1, если строки объединены)
+    //    private readonly List<ParseError> _errors = new(); // Ошибки, найденные при анализе
+    
+    //    // Текущий символ в позиции _pos или '\0', если вышли за границу
+    //    private char Current => _pos < _line.Length ? _line[_pos] : '\0';
+    
+    //    public List<ParseError> Errors => _errors;      // Публичный доступ к списку ошибок
+    
+    //    // Конструктор принимает все строки из редактора
+    //    public ParserFromText(string[] lines)
+    //    {
+    //        _lines = lines;
+    //    }
+    
+    //    // Главный метод запуска синтаксического анализа
+    //    public void Parse()
+    //    {
+    //        _line = string.Join(" ", _lines); // Объединяем строки в одну
+    //        _pos = 0;
+    
+    //        // Запускаем разбор до конца строки
+    //        while (_pos < _line.Length)
+    //        {
+    //            ParseFunctionPrototype(); // Пытаемся разобрать одно объявление
+    //            SkipWhitespace();         // Пропускаем пробелы между объявлениями
+    //        }
+    //    }
+    
+    //    // Пропускает все пробелы и табуляции в строке
+    //    private void SkipWhitespace()
+    //    {
+    //        while (_pos < _line.Length && char.IsWhiteSpace(_line[_pos]))
+    //        {
+    //            _pos++;
+    //        }
+    //    }
+    
+    //    // Метод разбора одного объявления функции: тип имя(параметры);
+    //    private void ParseFunctionPrototype()
+    //    {
+    //        SkipWhitespace();
+    
+    //        // 1. Ожидаем тип данных (int, float и т.д.)
+    //        if (!MatchType(out var typeStart, out var typeEnd))
+    //        {
+    //            SkipToNextAfterSpace(); // Переход к следующей лексеме после пробела
+    //        }
+    
+    //        // 2. Ожидаем пробел после типа
+    //        if (!MatchWhitespace())
+    //        {
+    //            ReportError("Ожидался пробел после типа данных", _pos, _pos);
+    //        }
+    
+    //        // 3. Ожидаем идентификатор (имя функции)
+    //        if (!MatchIdentifier(out var idStart, out var idEnd))
+    //        {
+    //            /*SkipToNextChar('(');*/ // Переход к скобке
+    //        }
+    
+    //        // 4. Ожидаем открывающую скобку (
+    //        bool hasOpenedBracket = MatchChar('(');
+    //        if (!hasOpenedBracket)
+    //        {
+    //            ReportError("Ожидалась открывающая скобка '('", _pos, _pos);
+    //            /*SkipToNextChar('(');*/ // Пропускаем до скобки
+    //            hasOpenedBracket = true;
+    //        }
+    
+    //        if (hasOpenedBracket)
+    //        {
+    //            SkipWhitespace();
+    
+    //            // 5. Параметры: если скобка закрыта сразу — параметров нет
+    //            if (Current == ')')
+    //            {
+    //                _pos++; // Просто закрываем скобку
+    //            }
+    //            else
+    //            {
+    //                ParseParameterList(); // Даже если есть ошибки — продолжаем
+    
+    //                // Закрывающая скобка
+    //                if (!MatchChar(')'))
+    //                {
+    //                    ReportError("Ожидалась закрывающая скобка ')'", _pos, _pos);
+    //                }
+    //            }
+    
+    //            // 6. Завершающая точка с запятой
+    //            if (!MatchChar(';'))
+    //            {
+    //                ReportError("Ожидался конец оператора ';'", _pos, _pos);
+    //            }
+    //        }
+    //    }
+    
+    //    // Разбирает список параметров: тип имя, тип имя, ...
+    //    private bool ParseParameterList()
+    //    {
+    //        while (true)
+    //        {
+    //            SkipWhitespace();
+    
+    //            // Тип параметра
+    //            if (!MatchType(out var typeStart, out var typeEnd))
+    //            {
+    //                /*SkipToNextChar(',', ')');*/ // Пропускаем до следующего разделителя
+    //                SkipToNextAfterSpace(); // Переход к следующей лексеме после пробела
+    //                //return false;
+    //            }
+    
+    //            // Обязательный пробел
+    //            if (!MatchWhitespace())
+    //            {
+    //                ReportError("Ожидался пробел после типа данных параметра", _pos, _pos);
+    //            }
+    
+    //            // Имя параметра
+    //            if (!MatchParameterIdentifier(out var nameStart, out var nameEnd))
+    //            {
+    //                /*SkipToNextChar(',', ')');*/ // Пропускаем до разделителя
+    //                return false;
+    //            }
+    
+    //            SkipWhitespace();
+    
+    //            // Следующий символ — либо запятая, либо закрывающая скобка
+    //            if (Current == ',')
+    //            {
+    //                _pos++; // Пропускаем запятую и идём за следующим параметром
+    //                continue;
+    //            }
+    
+    //            if (Current == ')')
+    //            {
+    //                return true; // Параметры завершены
+    //            }
+    
+    //            // Неожиданный символ — ошибка
+    //            ReportError("Ожидалась запятая ',' или закрывающая скобка ')'", _pos, _pos);
+    //            SkipToNextChar(',', ')');
+    //            return false;
+    //        }
+    //    }
+    
+    //    // Проверка и разбор типа данных (int, float и т.д.)
+    //    // Если найден некорректный тип — выделяет всю подстроку до пробела как ошибку
+    //    private bool MatchType(out int start, out int end)
+    //    {
+    //        start = _pos;
+    
+    //        // Двигаемся до пробела или конца строки — предполагаем, что это "тип"
+    //        int lookahead = _pos;
+    //        while (lookahead < _line.Length && !char.IsWhiteSpace(_line[lookahead]))
+    //        {
+    //            lookahead++;
+    //        }
+    
+    //        string fragment = _line.Substring(_pos, lookahead - _pos);
+    
+    //        // Список допустимых типов
+    //        string[] validTypes = { "int", "float", "char", "string", "bool" };
+    
+    //        if (validTypes.Contains(fragment))
+    //        {
+    //            // Тип корректный
+    //            end = lookahead;
+    //            _pos = lookahead; // Продвигаем указатель
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            // Тип некорректный — фиксируем как ошибку
+    //            ReportError("Ожидался тип данных", start, lookahead - 1, fragment);
+    //            end = lookahead;
+    //            _pos = lookahead;
+    //            return false;
+    //        }
+    //    }
+    
+    //    // Проверяет, есть ли хотя бы один пробел. Если нет — сообщает об ошибке.
+    //    private bool MatchWhitespace()
+    //    {
+    //        if (_pos < _line.Length && _line[_pos] == ' ')
+    //        {
+    //            _pos++; // Пропускаем только один пробел — этого достаточно
+    //            return true;
+    //        }
+    
+    //        return false;
+    //    }
+    
+    //    // Проверяет идентификатор: должен начинаться с англ. буквы и содержать только буквы и цифры
+    //    private bool MatchIdentifier(out int start, out int end)
+    //    {
+    //        start = _pos;
+    //        int lookahead = _pos;
+    
+    //        // Двигаемся до ограничителя (например, скобки или пробела)
+    //        while (lookahead < _line.Length && _line[lookahead] != '(' && !char.IsWhiteSpace(_line[lookahead]))
+    //        {
+    //            lookahead++;
+    //        }
+    
+    //        string fragment = _line.Substring(_pos, lookahead - _pos);
+    
+    //        if (IsValidIdentifier(fragment))
+    //        {
+    //            end = lookahead;
+    //            _pos = lookahead;
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            ReportError("Ожидался идентификатор функции", _pos, lookahead - 1, fragment);
+    //            end = lookahead;
+    //            _pos = lookahead;
+    //            return false;
+    //        }
+    //    }
+    
+    //    // Проверяет идентификатор параметра: заканчивается на запятую, пробел или скобку
+    //    private bool MatchParameterIdentifier(out int start, out int end)
+    //    {
+    //        start = _pos;
+    //        int lookahead = _pos;
+    
+    //        // Двигаемся до ближайшего ограничителя: запятая, пробел, закрывающая скобка
+    //        while (lookahead < _line.Length &&
+    //               _line[lookahead] != ',' &&
+    //               _line[lookahead] != ')' &&
+    //               !char.IsWhiteSpace(_line[lookahead]) &&
+    //               _line[lookahead] != ';')
+    //        {
+    //            lookahead++;
+    //        }
+    
+    //        string fragment = _line.Substring(_pos, lookahead - _pos);
+    
+    //        if (IsValidIdentifier(fragment))
+    //        {
+    //            end = lookahead;
+    //            _pos = lookahead;
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            ReportError("Ожидался идентификатор параметра", _pos, lookahead - 1, fragment);
+    //            end = lookahead;
+    //            _pos = lookahead;
+    //            return false;
+    //        }
+    //    }
+    
+    //    // Проверяет, соответствует ли строка правилам идентификатора
+    //    private bool IsValidIdentifier(string value)
+    //    {
+    //        if (string.IsNullOrEmpty(value)) return false;
+    
+    //        // Первый символ — только английская буква
+    //        if (!char.IsLetter(value[0]) || value[0] > 127)
+    //            return false;
+    
+    //        // Остальные — буквы или цифры
+    //        for (int i = 1; i < value.Length; i++)
+    //        {
+    //            char c = value[i];
+    //            if (!(char.IsLetterOrDigit(c) && c <= 127))
+    //                return false;
+    //        }
+    
+    //        return true;
+    //    }
+    
+    //    // Проверяет, соответствует ли текущий символ ожидаемому, иначе сообщает об ошибке
+    //    private bool MatchChar(char expected)
+    //    {
+    //        if (_pos < _line.Length && _line[_pos] == expected)
+    //        {
+    //            _pos++; // Пропускаем символ
+    //            return true;
+    //        }
+    
+    //        return false;
+    //    }
+    
+    //    // Пропускает символы до ближайшего одного из указанных символов
+    //    private void SkipToNextChar(params char[] stopChars)
+    //    {
+    //        while (_pos < _line.Length && !stopChars.Contains(_line[_pos]))
+    //        {
+    //            _pos++;
+    //        }
+    
+    //        if (_pos < _line.Length)
+    //        {
+    //            _pos++; // Пропускаем найденный символ
+    //        }
+    //    }
+    
+    //    // Пропускает текущую подстроку до следующего пробела (используется после ошибки в типе)
+    //    private void SkipToNextAfterSpace()
+    //    {
+    //        while (_pos < _line.Length && _line[_pos] != ' ')
+    //        {
+    //            _pos++;
+    //        }
+    
+    //        // Пропускаем сам пробел, если он есть
+    //        if (_pos < _line.Length && _line[_pos] == ' ')
+    //        {
+    //            //_pos++;
+    //            return;
+    //        }
+    //    }
+    
+    //    // Добавляет ошибку с заданным сообщением и позициями символов
+    //    private void ReportError(string message, int start, int end, string value = "")
+    //    {
+    //        string position = start == end
+    //            ? $"строка {_lineNumber}, символ {start + 1}"
+    //            : $"строка {_lineNumber}, символы {start + 1}-{end + 1}";
+    
+    //        _errors.Add(new ParseError(message, value, position));
+    //    }
+    //}
 }
