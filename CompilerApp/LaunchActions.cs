@@ -44,28 +44,10 @@ namespace CompilerApp
             {
                 errorsTable.Rows.Add(index++, error.Message, error.ErrorValue, error.Position);
             }
-
-            // Список для лексических ошибок (убрать потом)
-            //List<ParseError> scannerErrors = new List<ParseError>();
-            // Добавляем лексическую ошибку в таблицу (убрать весь foreach потом)
-            //index = 1;
-            //foreach (var token in tokens)
-            //{
-            //    if (token.TypeCode == TokenType.InvalidCode)
-            //    {
-            //        errorsTable.Rows.Add(index++, token.Name, token.Value, token.Position);
-
-            //        // Добавляем лексическую ошибку в список ошибок для будущей подсветки
-            //        scannerErrors.Add(new ParseError(token.Name, token.Value, token.Position));
-            //    }
-            //}
-
+            
             // Подсветка синтаксических и лексических ошибок в редакторе
             form.HighlightErrors(parser.Errors);
-
-            // Подсветка лексических ошибок в редакторе (убрать потом)
-            //form.HighlightErrors(scannerErrors);
-
+            
             // Переключаемся на вкладку с ошибками, если они есть
             if (errorsTable.Rows.Count > 0)
             {
