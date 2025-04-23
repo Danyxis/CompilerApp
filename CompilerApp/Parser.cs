@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace CompilerApp
 {
-    internal class Parser // Класс синтаксического анализатора (парсера) (по токенам)
+    // Класс синтаксического анализатора (парсера)
+    // (анализ по токенам, до первой ошибки, без нейтрализации ошибок)
+    internal class Parser
     {
         private State state = State.START; // Текущее состояние конечного автомата
         private Token currentToken; // Текущий токен, обрабатываемый парсером
