@@ -269,25 +269,27 @@ G[&lt;PR&gt;]:
    - V<sub>N</sub> = {&lt;PR&gt;, &lt;SPACE&gt;, &lt;IDFUNC&gt;, &lt;IDFUNCREM&gt;, &lt;EMPTY&gt;, &lt;PARAMETERS&gt;, &lt;SPACE2&gt;, &lt;IDPARAM&gt;, &lt;IDPARAMREM&gt;, &lt;END&gt;};
 
    - P = 
-      1. &lt;PR&gt; → &lt;type&gt; &lt;SPACE&gt;
-      2. &lt;SPACE&gt; → ‘ ’ &lt;IDFUNC&gt;
-      3. &lt;IDFUNC&gt; → &lt;letter&gt; &lt;IDFUNCREM&gt;
-      4. &lt;IDFUNCREM&gt; → &lt;letter&gt; &lt;IDFUNCREM&gt;
-      5. &lt;IDFUNCREM&gt; → &lt;digit&gt; &lt;IDFUNCREM&gt;
-      6. &lt;IDFUNCREM&gt; → ‘(’ &lt;EMPTY&gt;
-      7. &lt;IDFUNCREM&gt; → ‘(’ &lt;PARAMETERS&gt;
-      8. &lt;EMPTY&gt; → ‘)’ &lt;END&gt;
-      9. &lt;PARAMETERS&gt; → &lt;type&gt; &lt;SPACE2&gt;
-      10. &lt;SPACE2&gt; → ‘ ’ &lt;IDPARAM&gt;
-      11. &lt;IDPARAM&gt; → &lt;letter&gt; &lt;IDPARAMREM&gt;
-      12. &lt;IDPARAMREM&gt; → &lt;letter&gt; &lt;IDPARAMREM&gt;
-      13. &lt;IDPARAMREM&gt; → &lt;digit&gt; &lt;IDPARAMREM&gt;
-      14. &lt;IDPARAMREM&gt; → ‘,’ &lt;PARAMETERS&gt;
-      15. &lt;IDPARAMREM&gt; → ‘)’ &lt;END&gt;
-      16. &lt;END&gt; → ‘;’
-      - &lt;type&gt; → ‘int’ | ‘float’ | ‘char’ | ‘string’ | ‘bool’
-      - &lt;letter&gt; → ‘a’ | ‘b’ | ‘c’ | … | ‘y’ | ‘z’ | ‘A’ | ‘B’ | ‘C’ | … | ‘Y’ | ‘Z’
-      - &lt;digit&gt; → ‘0’ | ‘1’ | ‘2’ | ‘3’ | ‘4’ | ‘5’ | ‘6’ | ‘7’ | ‘8’ | ‘9’
+      ```
+      1. <PR> → <type> <SPACE>
+      2. <SPACE> → ‘ ’ <IDFUNC>
+      3. <IDFUNC> → <letter> <IDFUNCREM>
+      4. <IDFUNCREM> → <letter> <IDFUNCREM>
+      5. <IDFUNCREM> → <digit> <IDFUNCREM>
+      6. <IDFUNCREM> → ‘(’ <EMPTY>
+      7. <IDFUNCREM> → ‘(’ <PARAMETERS>
+      8. <EMPTY> → ‘)’ <END>
+      9. <PARAMETERS> → <type> <SPACE2>
+      10. <SPACE2> → ‘ ’ <IDPARAM>
+      11. <IDPARAM> → <letter> <IDPARAMREM>
+      12. <IDPARAMREM> → <letter> <IDPARAMREM>
+      13. <IDPARAMREM> → <digit> <IDPARAMREM>
+      14. <IDPARAMREM> → ‘,’ <PARAMETERS>
+      15. <IDPARAMREM> → ‘)’ <END>
+      16. <END> → ‘;’
+      <type> → ‘int’ | ‘float’ | ‘char’ | ‘string’ | ‘bool’
+      <letter> → ‘a’ | ‘b’ | ‘c’ | … | ‘y’ | ‘z’ | ‘A’ | ‘B’ | ‘C’ | … | ‘Y’ | ‘Z’
+      <digit> → ‘0’ | ‘1’ | ‘2’ | ‘3’ | ‘4’ | ‘5’ | ‘6’ | ‘7’ | ‘8’ | ‘9’
+      ```
 
 ### Классификация грамматики
 
