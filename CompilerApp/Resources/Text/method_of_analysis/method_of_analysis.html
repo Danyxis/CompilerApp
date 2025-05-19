@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Метод анализа</title>
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 14pt;
+            color: black;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-left: 3cm;
+            margin-right: 1.5cm;
+            text-align: justify;
+            text-indent: 1.25cm;
+            line-height: 1.25;
+            padding: 0cm;
+        }
+        h1 {
+            text-align: left;
+            text-indent: 0;
+            font-weight: normal;
+        }
+        .figure {
+            text-align: center;
+            margin: 1em 0 0.5em 0;
+        }
+        .caption {
+            text-align: center;
+            margin-bottom: 1.5em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+            font-family: "Times New Roman", serif;
+            font-size: 14pt;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>4 Метод анализа</h1>
+        <p>На рисунке 1 представлена диаграмма состояний сканера (лексического автомата).</p>
+
+        <div class="figure">
+            <img src="scanner_diagram.png" alt="Диаграмма состояний сканера" style="max-width:100%;">
+        </div>
+        <div class="caption">Рисунок 1 – Диаграмма состояний сканера (лексического автомата)</div>
+        
+        <p>
+            Так как грамматика G[&lt;PR&gt;] является автоматной, реализуем ее правила (1) - (16) на графе (см. рисунок 2).
+            Сплошными стрелками обозначен синтаксически верный процесс разбора, 
+            а пунктирными - переход в состояние ошибки (ERROR), то есть наличие синтаксических ошибок. 
+            Состояние 11 обозначает успешное завершение разбора.
+        </p>
+
+        <div class="figure">
+            <img src="nondeterministic_finite_automaton.png" alt="Граф G[<PR>]" style="max-width:100%;">
+        </div>
+        <div class="caption">Рисунок 2 – Граф G[&lt;PR&gt;]</div>
+
+        <p>
+            Так как из состояния 4 выходят несколько переходов, помеченных одним и тем же символом из словаря, 
+            то граф конечного автомата является недетерминированным (НКА) (см. рисунок 2).
+            Преобразуем данный граф в эквивалентный детерминированный конечный автомат (ДКА) (см. рисунок 3). 
+            Преобразование НКА в ДКА представлено в таблице 1.
+        </p>
+
+        <p>Таблица 1 – Преобразование НКА в ДКА</p>
+
+        <table>
+            <tr><th>Q</th><th>Z</th><th>type</th><th>_</th><th>letter</th><th>digit</th><th>(</th><th>)</th><th>;</th><th>,</th></tr>
+            <tr><td>q₀</td><td>1</td><td>2<sup>q₁</sup></td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td></tr>
+            <tr><td>q₁</td><td>2</td><td>✕</td><td>3<sup>q₂</sup></td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td></tr>
+            <tr><td>q₂</td><td>3</td><td>✕</td><td>✕</td><td>4<sup>q₃</sup></td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td></tr>
+            <tr><td>q₃</td><td>4</td><td>✕</td><td>✕</td><td>4<sup>q₃</sup></td><td>4<sup>q₃</sup></td><td>5,7<sup>q₄</sup></td><td>✕</td><td>✕</td><td>✕</td></tr>
+            <tr><td>q₄</td><td>5,7</td><td>8<sup>q₆</sup></td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>6<sup>q₅</sup></td><td>✕</td><td>✕</td></tr>
+            <tr><td>q₅</td><td>6</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>11<sup>q₇</sup></td><td>✕</td></tr>
+            <tr><td>q₆</td><td>8</td><td>✕</td><td>9<sup>q₈</sup></td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td></tr>
+            <tr><td>q₇*</td><td>11</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td></tr>
+            <tr><td>q₈</td><td>9</td><td>✕</td><td>✕</td><td>10<sup>q₉</sup></td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td></tr>
+            <tr><td>q₉</td><td>10</td><td>✕</td><td>✕</td><td>10<sup>q₉</sup></td><td>10<sup>q₉</sup></td><td>✕</td><td>6<sup>q₅</sup></td><td>✕</td><td>7<sup>q₁₀</sup></td></tr>
+            <tr><td>q₁₀</td><td>7</td><td>8<sup>q₆</sup></td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td><td>✕</td></tr>
+        </table>
+        
+        <div class="figure">
+            <img src="deterministic_finite_automaton.png" alt="Детерминированный конечный автомат" style="max-width:100%;">
+        </div>
+        <div class="caption">Рисунок 3 – Детерминированный конечный автомат</div>
+    </div>
+</body>
+</html>

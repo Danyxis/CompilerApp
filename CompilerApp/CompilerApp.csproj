@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>icons\iconCompilerApp.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Help\**" />
+    <Compile Remove="Text\**" />
+    <EmbeddedResource Remove="Help\**" />
+    <EmbeddedResource Remove="Text\**" />
+    <None Remove="Help\**" />
+    <None Remove="Text\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Lexer.cs" />
+    <Compile Remove="Parser.cs" />
+    <Compile Remove="State.cs" />
+    <Compile Remove="SyntaxAnalyzer\Parser.cs" />
+    <Compile Remove="SyntaxAnalyzer\State.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="icons\iconCompilerApp.ico" />
+    <None Remove="Resources\Help\about_program.html" />
+    <None Remove="Resources\Help\help.html" />
+    <None Remove="Resources\Text\diagnosis_and_neutralization_of_errors\diagnosis_and_neutralization_of_errors.html" />
+    <None Remove="Resources\Text\diagnosis_and_neutralization_of_errors\error_subtree.png" />
+    <None Remove="Resources\Text\diagnosis_and_neutralization_of_errors\parse_tree.png" />
+    <None Remove="Resources\Text\grammar.html" />
+    <None Remove="Resources\Text\grammar_classification.html" />
+    <None Remove="Resources\Text\list_of_literature.html" />
+    <None Remove="Resources\Text\method_of_analysis\deterministic_finite_automaton.png" />
+    <None Remove="Resources\Text\method_of_analysis\method_of_analysis.html" />
+    <None Remove="Resources\Text\method_of_analysis\nondeterministic_finite_automaton.png" />
+    <None Remove="Resources\Text\method_of_analysis\scanner_diagram.png" />
+    <None Remove="Resources\Text\setting_task.html" />
+    <None Remove="Resources\Text\source_code_of_program.html" />
+    <None Remove="Resources\Text\test_examples\test_example_1.png" />
+    <None Remove="Resources\Text\test_examples\test_example_2.png" />
+    <None Remove="Resources\Text\test_examples\test_example_3.png" />
+    <None Remove="Resources\Text\test_examples\test_example_4.png" />
+    <None Remove="Resources\Text\test_examples\test_example_5.png" />
+    <None Remove="Resources\Text\test_examples\test_example_6.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icons\iconCompilerApp.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Help\about_program.html" />
+    <EmbeddedResource Include="Resources\Help\help.html" />
+    <EmbeddedResource Include="Resources\Text\diagnosis_and_neutralization_of_errors\diagnosis_and_neutralization_of_errors.html" />
+    <EmbeddedResource Include="Resources\Text\diagnosis_and_neutralization_of_errors\error_subtree.png" />
+    <EmbeddedResource Include="Resources\Text\diagnosis_and_neutralization_of_errors\parse_tree.png" />
+    <EmbeddedResource Include="Resources\Text\grammar.html" />
+    <EmbeddedResource Include="Resources\Text\grammar_classification.html" />
+    <EmbeddedResource Include="Resources\Text\list_of_literature.html" />
+    <EmbeddedResource Include="Resources\Text\method_of_analysis\deterministic_finite_automaton.png" />
+    <EmbeddedResource Include="Resources\Text\method_of_analysis\method_of_analysis.html" />
+    <EmbeddedResource Include="Resources\Text\method_of_analysis\nondeterministic_finite_automaton.png" />
+    <EmbeddedResource Include="Resources\Text\method_of_analysis\scanner_diagram.png" />
+    <EmbeddedResource Include="Resources\Text\setting_task.html" />
+    <EmbeddedResource Include="Resources\Text\source_code_of_program.html" />
+    <EmbeddedResource Include="Resources\Text\test_examples\test_examples.html" />
+    <EmbeddedResource Include="Resources\Text\test_examples\test_example_1.png" />
+    <EmbeddedResource Include="Resources\Text\test_examples\test_example_2.png" />
+    <EmbeddedResource Include="Resources\Text\test_examples\test_example_3.png" />
+    <EmbeddedResource Include="Resources\Text\test_examples\test_example_4.png" />
+    <EmbeddedResource Include="Resources\Text\test_examples\test_example_5.png" />
+    <EmbeddedResource Include="Resources\Text\test_examples\test_example_6.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>InternalResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

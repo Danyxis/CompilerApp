@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Листинг программы</title>
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 14pt;
+            color: black;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-left: 3cm;
+            margin-right: 1.5cm;
+            text-align: justify;
+            text-indent: 0;
+            line-height: 1.25;
+            padding: 0cm;
+        }
+        h1 {
+            text-align: center;
+            text-indent: 0;
+            font-weight: normal;
+        }
+        h2 {
+            font-weight: normal;
+            margin-top: 1.5em;
+        }
+        pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            font-size: 12pt;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Листинг программы</h1>
+
+        <h2>Token.cs:</h2>
+        <pre>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CompilerApp
+{
+    internal class Token // Класс лексемы
+    {
+        public int TypeCode { get; }       // Код лексемы (числовое значение)
+        public string Name { get; }        // Тип лексемы (ключевое слово, идентификатор и т.д.)
+        public string Value { get; }       // Значение лексемы (сама строка)
+        public string Position { get; }    // Позиция в исходном коде
+
+        public Token(int typeCode, string name, string value, int line, int start, int end)
+        {
+            TypeCode = typeCode;
+            Name = name;
+            Value = value;
+            Position = $"строка {line}, символы {start}-{end}";
+        }
+    }
+}
+        </pre>
+
+        <h2>LexicalAnalyzer.cs:</h2>
+        <pre>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CompilerApp
+{
+    internal class LexicalAnalyzer // Класс лексического анализатора (сканера)
+    {
+        private bool lastTokenWasType = false; // Флаг для отслеживания ключевого слова (типа данных)
+        private readonly string[] _lines; // Массив строк кода для анализа
+
+        public LexicalAnalyzer(string[] lines)
+        {
+            _lines = lines;
+        }
+
+        public List<Token> Analyze()
+        {
+            List<Token> tokens = new List<Token>(); // Список найденных токенов
+            int lineNumber = 1; // Номер текущей строки
+
+            // Обход всех строк кода
+            foreach (string line in _lines)
+            {
+                int position = 0;
+                lastTokenWasType = false;
+
+                // Обход символов в текущей строке
+                while (position < line.Length)
+                {
+                    char currentChar = line[position];
+                    string charAsString = currentChar.ToString(); // Преобразуем символ в строку для удобства работы
+
+                    // Игнорируем пробелы, но добавляем их, если они значимые (разделитель после типа данных)
+                    if (char.IsWhiteSpace(currentChar))
+                    {
+                        if (currentChar == ' ' && lastTokenWasType)
+                        {
+                            tokens.Add(new Token(TokenType.SpaceCode, "Разделитель (пробел)", "", lineNumber, position + 1, position + 1));
+                            lastTokenWasType = false;
+                        }
+                        position++;
+                        continue;
+                    }
+
+                    // Обработка операторов (специальные символы, такие как ( ) , ;)
+                    if (IsOperator(currentChar))
+                    {
+                        string type = (charAsString == ";") ? "Конец оператора" : "Специальный символ";
+                        tokens.Add(new Token(TokenType.Operators[charAsString], type, charAsString, lineNumber, position + 1, position + 1));
+                        position++;
+                        continue;
+                    }
+
+                    // Обнаружение идентификаторов и ключевых слов (начинаются с английской буквы)
+                    if (char.IsLetter(currentChar) && IsEnglishLetter(currentChar))
+                    {
+                        ProcessIdentifierOrKeyword(line, ref position, lineNumber, tokens);
+                        continue;
+                    }
+
+                    // Проверка на недопустимые идентификаторы (начинаются с недопустимого символа, например, русской буквы, цифры или _)
+                    if (!IsEnglishLetter(currentChar))
+                    {
+                        ProcessInvalidIdentifier(line, ref position, lineNumber, tokens);
+                        continue;
+                    }
+
+                    // Обработка всех оставшихся недопустимых символов
+                    tokens.Add(new Token(TokenType.InvalidCode, "Недопустимый символ", charAsString, lineNumber, position + 1, position + 1));
+                    position++;
+                }
+
+                lineNumber++; // Переход к следующей строке
+            }
+
+            return tokens; // Возвращаем список найденных токенов
+        }
+
+        /// <summary>
+        /// Обрабатывает идентификаторы и ключевые слова
+        /// </summary>
+        private void ProcessIdentifierOrKeyword(string line, ref int position, int lineNumber, List<Token> tokens)
+        {
+            int start = position;
+            string lexeme = "";
+            bool hasRussianLetter = false; // Флаг, есть ли русские буквы в идентификаторе
+
+            // Читаем символы, пока они соответствуют допустимым символам идентификатора (буквы, цифры, _)
+            while (position < line.Length && (char.IsLetterOrDigit(line[position]) || line[position] == '_'))
+            {
+                lexeme += line[position];
+                if (IsRussianLetter(line[position]))
+                {
+                    hasRussianLetter = true; // Если найдена русская буква, запоминаем
+                }
+                position++;
+            }
+
+            // Если внутри идентификатора есть русская буква — это ошибка
+            if (hasRussianLetter)
+            {
+                tokens.Add(new Token(TokenType.InvalidCode, "Недопустимый идентификатор", lexeme, lineNumber, start + 1, position));
+                return;
+            }
+
+            // Проверяем, является ли слово ключевым
+            if (TokenType.Keywords.ContainsKey(lexeme))
+            {
+                tokens.Add(new Token(TokenType.Keywords[lexeme], "Ключевое слово", lexeme, lineNumber, start + 1, position));
+                lastTokenWasType = true; // Устанавливаем флаг, что найдено ключевое слово
+            }
+            else
+            {
+                tokens.Add(new Token(TokenType.IdentifierCode, "Идентификатор", lexeme, lineNumber, start + 1, position));
+            }
+        }
+
+        /// <summary>
+        /// Обрабатывает недопустимые идентификаторы (если слово начинается с недопустимого символа)
+        /// </summary>
+        private void ProcessInvalidIdentifier(string line, ref int position, int lineNumber, List<Token> tokens)
+        {
+            int start = position;
+            string lexeme = "";
+
+            // Читаем символы, пока они соответствуют допустимым символам идентификатора (буквы, цифры, _)
+            while (position < line.Length && (char.IsLetterOrDigit(line[position]) || line[position] == '_'))
+            {
+                lexeme += line[position];
+                position++;
+            }
+
+            // Если удалось считать слово, но оно начинается с недопустимого символа - добавляем в список как недопустимый идентификатор
+            if (lexeme.Length > 0)
+            {
+                tokens.Add(new Token(TokenType.InvalidCode, "Недопустимый идентификатор", lexeme, lineNumber, start + 1, position));
+            }
+            else
+            {
+                // Если слово не собрано, а символ недопустимый, добавляем его отдельно
+                tokens.Add(new Token(TokenType.InvalidCode, "Недопустимый символ", line[position].ToString(), lineNumber, position + 1, position + 1));
+                position++;
+            }
+        }
+
+        /// <summary>
+        /// Проверяет, является ли символ оператором (скобки, запятая, точка с запятой)
+        /// </summary>
+        private bool IsOperator(char c) => TokenType.Operators.ContainsKey(c.ToString());
+
+        /// <summary>
+        /// Проверяет, является ли символ английской буквой (A-Z, a-z)
+        /// </summary>
+        private bool IsEnglishLetter(char c) => (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+
+        /// <summary>
+        /// Проверяет, является ли символ русской буквой (А-Я, а-я)
+        /// </summary>
+        private bool IsRussianLetter(char c) => (c >= 'а' && c <= 'я') || (c >= 'А' && c <= 'Я');
+    }
+}
+        </pre>
+
+        <h2>LaunchActions.cs:</h2>
+        <pre>
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CompilerApp
+{
+    public static class LaunchActions // Класс для реализации пункта меню "Пуск"
+    {
+        public static void Launch(MainMenuForm form) // Запуск компилятора
+        {
+            // Получаем объекты области ввода и вывода
+            var inputArea = form.GetInputArea();
+            var outputTable = form.GetOutputTable();
+            var errorsTable = form.GetErrorsTable();
+
+            string[] codeLines = inputArea.Lines; // Получаем текст из поля ввода
+
+            // Создаем и запускаем лексический анализатор (сканер)
+            LexicalAnalyzer scanner = new LexicalAnalyzer(codeLines);
+            List<Token> tokens = scanner.Analyze();
+
+            // Очищаем таблицы перед выводом новых данных
+            outputTable.Rows.Clear();
+            errorsTable.Rows.Clear();
+
+            // Заполняем таблицы результатами сканера
+            int index = 1;
+            foreach (var token in tokens)
+            {
+                outputTable.Rows.Add(index++, token.TypeCode, token.Name, token.Value, token.Position);
+            }
+
+            // Список для лексических ошибок
+            List<ParseError> scannerErrors = new List<ParseError>();
+
+            // Добавляем лексическую ошибку в таблицу
+            index = 1;
+            foreach (var token in tokens)
+            {
+                if (token.TypeCode == TokenType.InvalidCode)
+                {
+                    errorsTable.Rows.Add(index++, token.Name, token.Value, token.Position);
+
+                    // Добавляем лексическую ошибку в список ошибок для будущей подсветки
+                    scannerErrors.Add(new ParseError(token.Name, token.Value, token.Position));
+                }
+            }
+
+            // Подсветка лексических ошибок в редакторе
+            form.HighlightErrors(scannerErrors);
+
+        }
+    }
+}
+        </pre>
+    </div>
+</body>
+</html>

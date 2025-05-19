@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Разработка грамматики</title>
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 14pt;
+            color: black;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-left: 3cm;
+            margin-right: 1.5cm;
+            text-align: justify;
+            text-indent: 1.25cm;
+            line-height: 1.25;
+            padding: 0cm;
+        }
+        .container ul, .container ol {
+            list-style-type: disc;
+            list-style-position: inside;
+            text-indent: 0;
+            margin-left: 0;
+            padding-left: 1.25cm;
+        }
+        h1 {
+            text-align: left;
+            text-indent: 0;
+            font-weight: normal;
+        }
+        .grammar {
+            text-indent: 0;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>2 Разработка грамматики</h1>
+        <p>Определим грамматику прототипа функции языка C/C++ G[&lt;PR&gt;] в нотации Хомского с продукциями P:</p>
+        <p class="grammar">
+            1) &lt;PR&gt; → &lt;type&gt; &lt;SPACE&gt;
+            2) &lt;SPACE&gt; → ‘ ’ &lt;IDFUNC&gt;
+            3) &lt;IDFUNC&gt; → &lt;letter&gt; &lt;IDFUNCREM&gt;
+            4) &lt;IDFUNCREM&gt; → &lt;letter&gt; &lt;IDFUNCREM&gt;
+            5) &lt;IDFUNCREM&gt; → &lt;digit&gt; &lt;IDFUNCREM&gt;
+            6) &lt;IDFUNCREM&gt; → ‘(’ &lt;EMPTY&gt;
+            7) &lt;IDFUNCREM&gt; → ‘(’ &lt;PARAMETERS&gt;
+            8) &lt;EMPTY&gt; → ‘)’ &lt;END&gt;
+            9) &lt;PARAMETERS&gt; → &lt;type&gt; &lt;SPACE2&gt;
+            10) &lt;SPACE2&gt; → ‘ ’ &lt;IDPARAM&gt;
+            11) &lt;IDPARAM&gt; → &lt;letter&gt; &lt;IDPARAMREM&gt;
+            12) &lt;IDPARAMREM&gt; → &lt;letter&gt; &lt;IDPARAMREM&gt;
+            13) &lt;IDPARAMREM&gt; → &lt;digit&gt; &lt;IDPARAMREM&gt;
+            14) &lt;IDPARAMREM&gt; → ‘,’ &lt;PARAMETERS&gt;
+            15) &lt;IDPARAMREM&gt; → ‘)’ &lt;END&gt;
+            16) &lt;END&gt; → ‘;’
+            <ul>
+                <li>&lt;type&gt; → “int” | “float” | “char” | “string” | “bool”</li>
+                <li>&lt;letter&gt; → “a” | “b” | “c” | … | “y” | “z” | “A” | “B” | “C” | … | “Y” | “Z”</li>
+                <li>&lt;digit&gt; → “0” | “1” | “2” | “3” | “4” | “5” | “6” | “7” | “8” | “9”</li>
+            </ul>
+        </p>
+        <p>Следуя введенному формальному определению грамматики, представим G[&lt;PR&gt;] ее составляющими:</p>
+        <ul>
+            <li>Z = &lt;PR&gt;;</li>
+            <li>V<sub>T</sub> = {int, float, char, string, bool, a, b, c, … , y, z, A, B, C, 
+                … , Y, Z, 0, 1, 2, … , 8, 9,  , (, ), , , ;};</li>
+            <li>V<sub>N</sub> = {&lt;PR&gt;, &lt;SPACE&gt;, &lt;IDFUNC&gt;, &lt;IDFUNCREM&gt;, 
+                &lt;EMPTY&gt;, &lt;PARAMETERS&gt;, &lt;SPACE2&gt;, &lt;IDPARAM&gt;, &lt;IDPARAMREM&gt;, &lt;END&gt;}.</li>
+        </ul>
+    </div>
+</body>
+</html>
