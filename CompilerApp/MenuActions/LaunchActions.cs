@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using CompilerApp.PolishReverseNotation;
 using CompilerApp.RegexSubstringSearch;
+using CompilerApp.ArithmeticExpression;
 
 namespace CompilerApp
 {
@@ -86,14 +87,14 @@ namespace CompilerApp
             if (!string.IsNullOrWhiteSpace(inputArea.Text))
             {
                 // Создаем синтаксический анализатор (парсер)
-                Parser parser = new Parser(inputArea.Text);
+                var parser = new CompilerApp.PolishReverseNotation.Parser(inputArea.Text);
 
                 if (parser.Tokens.Count != 0)
                 {
                     parser.Parse(); // Запускаем синтаксический анализатор (парсер)
 
                     // Собираем все ошибки: сначала синтаксические, затем лексические
-                    List<Error> Errors = parser.Errors;
+                    List<CompilerApp.PolishReverseNotation.Error> Errors = parser.Errors;
                     Errors.AddRange(parser.Scanner.Errors);
 
                     // Сортируем ошибки по начальной позиции
@@ -215,6 +216,79 @@ namespace CompilerApp
 
             // Переключаемся на вкладку с результатами
             form.SelectResultsTab();
+        }
+
+        // Запуск анализа арифметического выражения
+        public static void LaunchArithmeticExpressionAnalyzer(MainMenuForm form)
+        {
+            // Получаем объекты области ввода и вывода
+            var inputArea = form.GetInputArea();
+            var outputTable = form.GetOutputTable();
+            var errorsTable = form.GetErrorsTable();
+            var outputArea = form.GetOutputArea();
+
+            // Очищаем старые результаты
+            outputTable.Rows.Clear();
+            errorsTable.Rows.Clear();
+            outputArea.Clear();
+
+            // Проверяем, что текст для анализа есть
+            if (!string.IsNullOrWhiteSpace(inputArea.Text))
+            {
+                // Создаем и запускаем синтаксический анализатор (парсер)
+                var parser = new CompilerApp.ArithmeticExpression.Parser(inputArea.Text);
+                parser.Parse();
+
+                // Выводим дерево разбора (вызовы правил грамматики)
+                outputArea.AppendText("Последовательность вызова правил грамматики:\n\n");
+                outputArea.AppendText(parser.GetCallTrace());
+
+                // Выводим список лексем в таблицу
+                int index = 1;
+                foreach (var token in parser.Tokens)
+                {
+                    outputTable.Rows.Add(index++, "", token.Type, token.Value,
+                        $"символы {token.Position.start + 1}-{token.Position.end + 1}");
+                }
+
+                // Получаем и сортируем ошибки
+                var errors = parser.Errors.OrderBy(e => e.Position.start).ToList();
+
+                // Выводим ошибки в таблицу
+                index = 1;
+                foreach (var error in errors)
+                {
+                    errorsTable.Rows.Add(index++, error.Message, error.Fragment,
+                        $"символы {error.Position.start + 1}-{error.Position.end}");
+                }
+
+                // Снимаем старую подсветку
+                inputArea.SelectAll();
+                inputArea.SelectionBackColor = inputArea.BackColor;
+
+                // Подсвечиваем ошибки
+                foreach (var error in errors)
+                {
+                    inputArea.Select(error.Position.start, error.Position.end - error.Position.start);
+                    inputArea.SelectionBackColor = Color.Pink;
+                }
+
+                // Сбрасываем выделение
+                inputArea.Select(0, 0);
+                inputArea.SelectionBackColor = inputArea.BackColor;
+
+                // Обновляем статус и переключаем вкладку
+                if (errors.Count == 0)
+                {
+                    form.SelectResultsTab();
+                    form.UpdateStatus("Ошибок не обнаружено");
+                }
+                else
+                {
+                    form.SelectErrorsTab();
+                    form.UpdateStatus($"Обнаружено ошибок: {errors.Count}");
+                }
+            }
         }
     }
 }

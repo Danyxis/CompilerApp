@@ -193,6 +193,11 @@ namespace CompilerApp
                 case AnalysisMode.RealNumber:
                     LaunchActions.LaunchRealNumberSearch(this);
                     break;
+
+                // Анализ арифметического выражения
+                case AnalysisMode.ArithmeticExpression:
+                    LaunchActions.LaunchArithmeticExpressionAnalyzer(this);
+                    break;
             }
         }
 

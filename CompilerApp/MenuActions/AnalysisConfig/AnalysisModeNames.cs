@@ -21,7 +21,8 @@ namespace CompilerApp
             { AnalysisMode.PolishReverseNotation, "ПОЛИЗ" },
             { AnalysisMode.HexColor, "HEX-код цвета" },
             { AnalysisMode.HexNumber, "Шестнадцатеричное число" },
-            { AnalysisMode.RealNumber, "Действительное число" }
+            { AnalysisMode.RealNumber, "Действительное число" },
+            { AnalysisMode.ArithmeticExpression, "Арифметическое выражение" }
         };
     }
 }

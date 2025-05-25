@@ -21,7 +21,8 @@ namespace CompilerApp
             { AnalysisMode.PolishReverseNotation, "((100 + 25) - 5) * (10 / 2)" },
             { AnalysisMode.HexColor, "HEX-код цвета: #FFF, #abc" },
             { AnalysisMode.HexNumber, "Шестнадцатеричное число: 0xABC, 0X1F4" },
-            { AnalysisMode.RealNumber, "Действительное число: 3.14, -0.5, 2e10, +1.2E-4" }
+            { AnalysisMode.RealNumber, "Действительное число: 3.14, -0.5, 2e10, +1.2E-4" },
+            { AnalysisMode.ArithmeticExpression, "-ln(8.9 - 4.5) / 3.0" }
         };
     }
 }

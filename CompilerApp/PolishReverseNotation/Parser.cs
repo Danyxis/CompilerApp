@@ -23,7 +23,7 @@ namespace CompilerApp.PolishReverseNotation
         }
 
         // Метод для фиксации синтаксической ошибки
-        private void handleError(string message, string value, (int start, int end) pos)
+        private void HandleError(string message, string value, (int start, int end) pos)
         {
             Errors.Add(new Error(message, value, pos));
         }
@@ -40,11 +40,11 @@ namespace CompilerApp.PolishReverseNotation
 
                 if (token.Type == TokenType.CloseParenthesis)
                 {
-                    handleError("Лишняя закрывающая скобка ')'", token.Value, token.Position);
+                    HandleError("Лишняя закрывающая скобка ')'", token.Value, token.Position);
                 }
                 else
                 {
-                    handleError("Неожиданный токен после конца выражения", token.Value, token.Position);
+                    HandleError("Неожиданный токен после конца выражения", token.Value, token.Position);
                 }
                 pos++;
             }
@@ -90,7 +90,7 @@ namespace CompilerApp.PolishReverseNotation
             {
                 // Если достигнут конец ввода — ошибка
                 var lastToken = Tokens.Last();
-                handleError("Ожидался операнд, но достигнут конец ввода", "", (lastToken.Position.end, lastToken.Position.end));
+                HandleError("Ожидался операнд, но достигнут конец ввода", "", (lastToken.Position.end, lastToken.Position.end));
                 return;
             }
 
@@ -113,13 +113,13 @@ namespace CompilerApp.PolishReverseNotation
                 {
                     // Нет закрывающей скобки
                     var prevToken = Tokens[Math.Max(pos - 1, 0)];
-                    handleError("Ожидалась закрывающая скобка ')'", prevToken.Value, prevToken.Position);
+                    HandleError("Ожидалась закрывающая скобка ')'", prevToken.Value, prevToken.Position);
                 }
             }
             else
             {
                 // Ни число, ни открывающая скобка — ошибка
-                handleError("Ожидался операнд", currentToken.Value, currentToken.Position);
+                HandleError("Ожидался операнд", currentToken.Value, currentToken.Position);
             }
         }
     }

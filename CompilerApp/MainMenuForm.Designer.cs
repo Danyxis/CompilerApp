@@ -298,7 +298,7 @@
             comboModeSelector.Margin = new Padding(0);
             comboModeSelector.Name = "comboModeSelector";
             comboModeSelector.Padding = new Padding(5, 0, 5, 0);
-            comboModeSelector.Size = new Size(240, 28);
+            comboModeSelector.Size = new Size(260, 28);
             comboModeSelector.Text = "Режим анализа";
             comboModeSelector.SelectedIndexChanged += comboModeSelector_SelectedIndexChanged;
             // 
