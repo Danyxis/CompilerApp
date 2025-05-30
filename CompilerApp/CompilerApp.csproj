@@ -22,8 +22,6 @@
     <Compile Remove="Lexer.cs" />
     <Compile Remove="Parser.cs" />
     <Compile Remove="State.cs" />
-    <Compile Remove="SyntaxAnalyzer\Parser.cs" />
-    <Compile Remove="SyntaxAnalyzer\State.cs" />
   </ItemGroup>
 
   <ItemGroup>

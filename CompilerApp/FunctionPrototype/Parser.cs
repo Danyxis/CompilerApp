@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace CompilerApp
 {
+    /// <summary>
+    /// НЕ ИСПОЛЬЗУЕТСЯ!
+    /// </summary>
+
     // Класс синтаксического анализатора (парсера)
     // (анализ по токенам, до первой ошибки, без нейтрализации ошибок)
     internal class Parser

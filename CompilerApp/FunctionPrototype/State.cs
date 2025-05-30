@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace CompilerApp
 {
+    /// <summary>
+    /// НЕ ИСПОЛЬЗУЕТСЯ!
+    /// </summary>
+
     // Перечисление состояний конечного автомата для синтаксического анализа
     internal enum State
     {

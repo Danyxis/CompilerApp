@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using CompilerApp.PolishReverseNotation;
 using CompilerApp.RegexSubstringSearch;
 using CompilerApp.ArithmeticExpression;
+using CompilerApp.AutomatonSubstringSearch;
 
 namespace CompilerApp
 {
@@ -170,7 +171,11 @@ namespace CompilerApp
         // Запуск поиска действительных чисел (включая экспоненциальную форму)
         public static void LaunchRealNumberSearch(MainMenuForm form)
         {
+            // Через регулярное выражение
             RunSingleRegexSearch(form, "Действительное число", RegexMatchers.FindRealNumbers);
+
+            // Через автомат
+            RunAutomatonSearch(form);
         }
 
         /// <summary>
@@ -202,7 +207,7 @@ namespace CompilerApp
             var results = new StringBuilder();
 
             // Заголовок результатов
-            results.AppendLine("Найденные выражения:\n");
+            results.AppendLine("Найденные выражения через регулярное выражение:\n");
 
             // Заполняем результаты и подсвечиваем совпадения
             RegexUtils.AppendMatches(results, label, matches, inputArea);
@@ -216,6 +221,37 @@ namespace CompilerApp
 
             // Переключаемся на вкладку с результатами
             form.SelectResultsTab();
+        }
+
+        // Метод для запуска поиска выражений (действительных чисел) через автомат
+        private static void RunAutomatonSearch(MainMenuForm form)
+        {
+            // Получаем объекты области ввода и вывода
+            var inputArea = form.GetInputArea();
+            var outputArea = form.GetOutputArea();
+
+            // Получаем введенный текст
+            string inputText = inputArea.Text;
+
+            // Выполняем поиск совпадений
+            var matches = RealNumberAutomaton.FindRealNumbersByAutomaton(inputText);
+            var results = new StringBuilder();
+            results.AppendLine("\nНайденные выражения через автомат:\n");
+
+            // Заполняем результаты и подсвечиваем совпадения
+            foreach (var match in matches)
+            {
+                results.AppendLine($"Действительное число: {match.Value}, начальная позиция: символ {match.Index}");
+                inputArea.Select(match.Index, match.Value.Length);
+                inputArea.SelectionBackColor = System.Drawing.Color.LightGreen;
+            }
+
+            // Выводим результат в текстовую область
+            outputArea.AppendText(results.ToString());
+
+            // Сбрасываем выделение
+            inputArea.Select(0, 0);
+            inputArea.SelectionBackColor = inputArea.BackColor;
         }
 
         // Запуск анализа арифметического выражения
