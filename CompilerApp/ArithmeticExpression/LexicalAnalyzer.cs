@@ -30,7 +30,47 @@ namespace CompilerApp.ArithmeticExpression
         // Добавление токена в список
         private void AddToken(TokenType type, string value, (int start, int end) position)
         {
-            Tokens.Add(new Token(type, value, position));
+            var (id, desc) = GetTokenInfo(type, value);
+            Tokens.Add(new Token(type, id, desc, value, position));
+        }
+
+        // Возвращает идентификатор токена и его название по типу и значению
+        private (int, string) GetTokenInfo(TokenType type, string value)
+        {
+            return type switch
+            {
+                // Для числа
+                TokenType.Number => (1, "Дробное число"),
+
+                // Для имени функции
+                TokenType.FunctionName => value switch
+                {
+                    "sin" => (2, "Математическая функция"),
+                    "cos" => (3, "Математическая функция"),
+                    "tg" => (4, "Математическая функция"),
+                    "ctg" => (5, "Математическая функция"),
+                    "log" => (6, "Математическая функция"),
+                    "ln" => (7, "Математическая функция"),
+                    _ => (666, "Неизвестная функция") // если имя функции неизвестно
+                },
+
+                // Для арифметических операторов
+                TokenType.Plus => (8, "Оператор сложения"),
+                TokenType.Minus => (9, "Оператор вычитания"),
+                TokenType.Multiplication => (10, "Оператор умножения"),
+                TokenType.Division => (11, "Оператор деления"),
+
+                // Для специальных символов
+                TokenType.Dot => (12, "Специальный символ"),
+                TokenType.OpenParenthesis => (13, "Специальный символ"),
+                TokenType.CloseParenthesis => (14, "Специальный символ"),
+
+                // Для недопустимых символов
+                TokenType.Error => (666, "Недопустимый символ"),
+
+                // На случай появления неизвестного типа токена
+                _ => (666, "Неизвестно")
+            };
         }
 
         // Основной метод лексического анализа
@@ -114,8 +154,9 @@ namespace CompilerApp.ArithmeticExpression
                             // Неизвестный символ — ошибка
                             default:
                                 State = 13;
-                                errorFragment += currentChar;
                                 errorStart = position;
+                                AddToken(TokenType.Error, currentChar.ToString(), (position, position));
+                                errorFragment += currentChar;
                                 position++;
                                 break;
                         }
@@ -253,6 +294,8 @@ namespace CompilerApp.ArithmeticExpression
                         // Продолжаем собирать ошибочный фрагмент, пока не встретим допустимый символ
                         if (position < codeText.Length && IsErrorChar(currentChar))
                         {
+                            // Добавляем токен для каждого недопустимого символа
+                            AddToken(TokenType.Error, currentChar.ToString(), (position, position));
                             errorFragment += currentChar;
                             position++;
                         }

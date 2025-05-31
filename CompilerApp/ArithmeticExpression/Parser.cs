@@ -55,7 +55,7 @@ namespace CompilerApp.ArithmeticExpression
         private Token SafeToken(int offset = 0)
         {
             return pos + offset < Tokens.Count ? Tokens[pos + offset] :
-                (Tokens.LastOrDefault() ?? new Token(TokenType.End, "", (0, 0)));
+                (Tokens.LastOrDefault() ?? new Token(TokenType.End, 15, "Конец оператора", "", (0, 0)));
         }
 
         // Проверка: совпадает ли текущий токен с ожидаемым типом

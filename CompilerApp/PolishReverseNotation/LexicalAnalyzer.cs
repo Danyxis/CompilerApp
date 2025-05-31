@@ -84,8 +84,8 @@ namespace CompilerApp.PolishReverseNotation
                                 break;
                             default:
                                 State = 9; // Переход в состояние ошибки
-                                errorFragment += currentChar;
                                 errorStart = position;
+                                errorFragment += currentChar;
                                 position++;
                                 break;
                         }

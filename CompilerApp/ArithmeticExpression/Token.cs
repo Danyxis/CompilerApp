@@ -33,13 +33,19 @@ namespace CompilerApp.ArithmeticExpression
     {
         public TokenType Type { get; set; } // Тип токена
 
+        public int Id { get; set; } // Уникальный идентификатор (код лексемы)
+
+        public string Description { get; set; } // Название токена (тип лексемы: дробное число, математическая функция и т.д.)
+
         public string Value { get; set; } // Значение токена в исходном тексте
 
         public (int start, int end) Position { get; set; } // Позиция токена в исходной строке: начало и конец (включительно)
 
-        public Token(TokenType type, string value, (int start, int end) position)
+        public Token(TokenType type, int id, string description, string value, (int start, int end) position)
         {
             Type = type;
+            Id = id;
+            Description = description;
             Value = value;
             Position = position;
         }

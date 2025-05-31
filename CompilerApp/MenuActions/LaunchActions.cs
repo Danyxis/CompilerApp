@@ -283,7 +283,7 @@ namespace CompilerApp
                 int index = 1;
                 foreach (var token in parser.Tokens)
                 {
-                    outputTable.Rows.Add(index++, "", token.Type, token.Value,
+                    outputTable.Rows.Add(index++, token.Id, token.Description, token.Value,
                         $"символы {token.Position.start + 1}-{token.Position.end + 1}");
                 }
 
